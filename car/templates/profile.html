@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block containt %}
+<h4 class="text-center mt-5 p-3">Welcome to Profile Page</h4>
+<h6 class="text-center">Hello Mr. {{user.first_name}}</h6>
+<a href="{% url "passchange" %}" class="btn btn-warning ms-5">Change Password</a>
+<form method="post" class="w-50 mx-auto mt-5" novalidate>
+    {% comment %} <h1 class="mb-2 mt-2">Please Register Here..</h1> {% endcomment %}
+    {% csrf_token %}
+    {{form | crispy}}
+    <button class="btn btn-warning" type="submit">Save</button>
+    <br>
+    {% comment %} <small>Allready have an Account <a href="{% url "login" %}">Login</a></small> {% endcomment %}
+</form>
+    
+
+{% endblock  %}

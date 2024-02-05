@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block containt %}
+
+
+
+    <div class="row gap-2 mt-5 mb-3">
+        {% for car in cars %}
+            <div class="card col-md-4 mx-auto mb-3" style="width: 18rem;">
+                <img src="{{car.picture.url}}" class="card-img-top img-fluid" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">{{car.name}}</h5>
+                <p class="card-text">{{car.description | truncatechars:40}}</p>
+                <p class="card-text">Quantity: {{car.quantity}}</p>
+                <p class="card-text"><b>Price:</b> ${{car.price}}</p>
+                <a href="{% url "car_detail" pk=car.pk %}" class="btn btn-primary">See Details..</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock  %}
