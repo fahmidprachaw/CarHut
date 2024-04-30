@@ -17,6 +17,7 @@
                     <p class="card-text"><b>parches_date:</b> ${{order.parches_date}}</p>
                     {% comment %} <a href="{% url "car_detail" pk=car.pk %}" class="btn btn-primary">See Details..</a> {% endcomment %}
                     </div>
+                    <a class="btn btn-primary" href="{% url "car_detail" pk=order.car.pk %}">Details</a>
                 </div>
             {% endfor %}
         </div>

@@ -9,6 +9,8 @@ from .models import Car, Brand, Order
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
 
 # Create your views here.
 
@@ -53,20 +55,20 @@ def user_logout(request):
 
 
 
-def Profile(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            profile_forms = forms.UserChangeData(request.POST, instance = request.user)
-            if profile_forms.is_valid():
-                profile_forms.save()
-                messages.success(request, 'Saved successfully')
-                return redirect('profile')
-        else:
-            profile_forms = forms.UserChangeData(instance = request.user)
-        # return render(request, 'register.html', {'form' : register_forms})
-        return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
-    else:
-        return redirect('login')
+# def Profile(request):
+#     if request.user.is_authenticated:
+#         if request.method == 'POST':
+#             profile_forms = forms.UserChangeData(request.POST, instance = request.user)
+#             if profile_forms.is_valid():
+#                 profile_forms.save()
+#                 messages.success(request, 'Saved successfully')
+#                 return redirect('profile')
+#         else:
+#             profile_forms = forms.UserChangeData(instance = request.user)
+#         # return render(request, 'register.html', {'form' : register_forms})
+#         return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
+#     else:
+#         return redirect('login')
     
 
 class CarListView(ListView):
@@ -136,4 +138,33 @@ def change_password(request):
     else:
         return redirect('login')
 
+# class ProfileView(LoginRequiredMixin, View):
+#     def get(self, request):
+#         profile_forms = forms.UserChangeData(instance=request.user)
+#         return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
+    
+#     def post(self, request):
+#         profile_forms = forms.UserChangeData(request.POST, instance=request.user)
+#         if profile_forms.is_valid():
+#             profile_forms.save()
+#             messages.success(request, 'Saved successfully')
+#             return redirect('profile')
+#         else:
+#             return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
+
+class ProfileView(LoginRequiredMixin, View):
+    def get(self, request):
+        profile_forms = forms.UserChangeData(instance=request.user)
+        ordered_cars = Order.objects.filter(user=request.user)[:2]
+        return render(request, 'profile.html', {'form': profile_forms, 'user': request.user, 'ordered_cars': ordered_cars})
+    
+    def post(self, request):
+        profile_forms = forms.UserChangeData(request.POST, instance=request.user)
+        if profile_forms.is_valid():
+            profile_forms.save()
+            messages.success(request, 'Saved successfully')
+            return redirect('profile')
+        else:
+            return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
+    
 

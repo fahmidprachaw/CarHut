@@ -3,7 +3,34 @@
 {% block containt %}
 <h4 class="text-center mt-5 p-3">Welcome to Profile Page</h4>
 <h6 class="text-center">Hello Mr. {{user.first_name}}</h6>
-<a href="{% url "passchange" %}" class="btn btn-warning ms-5">Change Password</a>
+
+<h1 class="text-center mt-5">Bought cars</h1>
+<hr class="w-50 mx-auto">
+<div class="row gap-3 w-75 mx-auto mt-5">
+    {% for order in ordered_cars %}
+        
+        <div class="card col-6" style="width: 18rem;">
+            <img src="{{order.car.picture.url}}" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+            <h5 class="card-title">{{order.car.name}}</h5>
+            <p class="card-text">{{order.car.description | truncatechars:40}}</p>
+            {% comment %} <p class="card-text">Quantity: {{car.quantity}}</p> {% endcomment %}
+            <p class="card-text"><b>Price:</b> ${{order.car.price}}</p>
+            <p class="card-text"><b>parches_date:</b> ${{order.parches_date}}</p>
+            {% comment %} <a href="{% url "car_detail" pk=car.pk %}" class="btn btn-primary">See Details..</a> {% endcomment %}
+            </div>
+            <a class="btn btn-primary" href="{% url "car_detail" pk=order.car.pk %}">Details</a>
+        </div>
+    {% endfor %}
+</div>
+<div class="w-25 mx-auto mt-3">
+    <a class="btn btn-primary" href="{% url "order_car" %}">See More...</a>
+</div>
+
+
+
+<h3 class="text-center mt-5">Update your Profile</h3>
+<hr class="w-50 mx-auto">
 <form method="post" class="w-50 mx-auto mt-5" novalidate>
     {% comment %} <h1 class="mb-2 mt-2">Please Register Here..</h1> {% endcomment %}
     {% csrf_token %}
@@ -12,6 +39,6 @@
     <br>
     {% comment %} <small>Allready have an Account <a href="{% url "login" %}">Login</a></small> {% endcomment %}
 </form>
-    
+<a href="{% url "passchange" %}" class="btn btn-warning ms-5">Change Password</a>    
 
 {% endblock  %}
