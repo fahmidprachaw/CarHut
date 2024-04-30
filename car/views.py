@@ -138,19 +138,7 @@ def change_password(request):
     else:
         return redirect('login')
 
-# class ProfileView(LoginRequiredMixin, View):
-#     def get(self, request):
-#         profile_forms = forms.UserChangeData(instance=request.user)
-#         return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
-    
-#     def post(self, request):
-#         profile_forms = forms.UserChangeData(request.POST, instance=request.user)
-#         if profile_forms.is_valid():
-#             profile_forms.save()
-#             messages.success(request, 'Saved successfully')
-#             return redirect('profile')
-#         else:
-#             return render(request, 'profile.html', {'form': profile_forms, 'user': request.user})
+
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
